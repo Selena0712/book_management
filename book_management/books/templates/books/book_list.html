@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book List</title>
+    <style>
+        .book-item {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        {% if user.is_authenticated %}
+            <p>欢迎，{{ user.username }}!</p>
+            <a href="{% url 'logout' %}">退出</a>
+        {% else %}
+            <a href="{% url 'login' %}">登录</a> |
+            <a href="{% url 'register' %}">注册</a>
+        {% endif %}
+    </div>
+    <h1>Book List</h1>
+    <a href="{% url 'add_book' %}">Add New Book</a>
+    <a href="{% url 'loan_history' %}">View loan history</a>
+    <ul>
+        {% for item in books_with_loans %}
+            <li class="book-item">
+                <span><strong>Title:</strong> {{ item.book.title }}</span>
+                <span><strong>Author:</strong> {{ item.book.author.name }}</span>
+                <span><strong>Published Date:</strong> {{ item.book.published_date }}</span>
+                <span><strong>ISBN:</strong> {{ item.book.isbn }}</span>
+                <span><strong>Category:</strong> {{ item.book.category }}</span>
+                <span><strong>Available Copies:</strong> {{ item.book.available_copies }}</span>
+                <a href="{% url 'edit_book' item.book.id %}">Edit</a> |
+                <a href="{% url 'delete_book' item.book.id %}">Delete</a> |
+                
+                {% if item.unreturned_loan %}
+                    <!-- 如果有未归还的借阅记录，显示 Return 按钮 -->
+                    <a href="{% url 'return_book' item.unreturned_loan.id %}">Return</a>
+                {% else %}
+                    <!-- 如果没有未归还的借阅记录，显示 Loan 按钮 -->
+                    <a href="{% url 'loan_book' item.book.id %}">Loan</a>
+                {% endif %}
+            </li>
+            <hr>
+        {% endfor %}
+    </ul>
+</body>
+</html>

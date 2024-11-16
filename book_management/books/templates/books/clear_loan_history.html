@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Clear Loan History</title>
+</head>
+<body>
+    <h1>Are you sure you want to delete all loan history?</h1>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Yes, Clear All History</button>
+    </form>
+    <a href="{% url 'book_list' %}">Cancel</a>
+</body>
+</html>
