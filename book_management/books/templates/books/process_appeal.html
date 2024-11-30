@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>处理申诉</title>
+</head>
+<body>
+    <h1>处理申诉</h1>
+    <p>申诉人: {{ appeal.user.username }}</p>
+    <p>申诉理由: {{ appeal.reason }}</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" name="action" value="approve">接受申诉</button>
+        <button type="submit" name="action" value="reject">拒绝申诉</button>
+        
+        <!-- 如果拒绝，显示拒绝原因输入框 -->
+        <div>
+            <label for="rejection_reason">拒绝理由：</label>
+            <textarea name="rejection_reason" id="rejection_reason" rows="4" cols="50"></textarea>
+        </div>
+    </form>
+
+    <a href="{% url 'view_appeals' %}">返回申诉管理</a>
+</body>
+</html>

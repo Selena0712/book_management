@@ -16,8 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from books import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('books.urls')),  # 确保包含 books 应用的 URL 配置
+    path('users/', include('books.urls')),
+    path('loan_history/', views.loan_history, name='loan_history'),
+    path('', views.home, name='home')
 ]

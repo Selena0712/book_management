@@ -1,7 +1,18 @@
-<!-- templates/books/register.html -->
-<h2>用户注册</h2>
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">注册</button>
-</form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册</title>
+</head>
+<body>
+    <h1>注册</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}  <!-- 显示表单字段和自定义错误信息 -->
+        <button type="submit">提交</button>
+    </form>
+    <br>
+    <a href="{% url 'user_login' %}">已有账号? 登录</a>
+</body>
+</html>

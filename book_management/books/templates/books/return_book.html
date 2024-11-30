@@ -1,16 +1,24 @@
+<!-- books/templates/books/return_book.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>Return Book</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>还书</title>
 </head>
 <body>
-    <h1>Return {{ loan.book.title }}</h1>
-    <form method="POST">
+    <h1>还书</h1>
+    <p>图书名称: {{ loan.book.title }}</p>
+    <p>借书日期: {{ loan.borrow_date|date:"Y-m-d" }}</p>
+    <p>应还日期: {{ loan.due_date|date:"Y-m-d" }}</p>
+
+    <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Return Book</button>
+        <label for="return_date">还书日期:</label>
+        <input type="date" id="return_date" name="return_date" required>
+        <button type="submit">提交</button>
     </form>
-    <a href="{% url 'book_list' %}">Back to Book List</a>
+
+    <p><a href="{% url 'loan_history' %}">返回借阅历史</a></p>
 </body>
 </html>

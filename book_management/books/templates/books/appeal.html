@@ -1,0 +1,22 @@
+<!-- books/templates/books/appeal.html -->
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>申诉页面</title>
+</head>
+<body>
+    <h1>申诉页面</h1>
+
+    <p>由于你逾期未归还书籍，已被列入黑名单。请填写申诉原因以解除黑名单限制。</p>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">提交申诉</button>
+    </form>
+
+    <a href="{% url 'home' %}">返回首页</a>
+</body>
+</html>

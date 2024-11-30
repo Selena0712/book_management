@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首页</title>
+</head>
+<body>
+    <h1>欢迎来到图书管理系统</h1>
+
+    <!-- 只显示拒绝申诉相关的消息 -->
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                {% if "申诉被拒绝" in message %}
+                    <p class="message">{{ message }}</p>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+    
+    <p><a href="{% url 'book_list' %}">进入图书列表</a></p>
+    <p><a href="{% url 'loan_history' %}">查看借阅历史</a></p>
+    <p><a href="{% url 'user_profile' %}">个人中心</a></p>
+
+    {% if user.is_authenticated %}
+        {% if user.is_staff %}
+            <p><a href="{% url 'view_appeals' %}">查看申诉</a></p>
+            <p><a href="{% url 'user_management' %}">用户管理</a></p>
+        {% endif %}
+        
+        {% if user.is_blacklisted %}
+            <!-- 如果用户被列入黑名单，显示申诉链接 -->
+            <a href="{% url 'appeal_blacklist' %}">点击这里申诉</a>
+        {% else %}
+        {% endif %}
+
+        <!-- 如果用户已登录，显示退出登录链接 -->
+        <a href="{% url 'user_logout' %}">退出登录</a>
+    {% else %}
+        <!-- 如果用户未登录，显示登录和注册链接 -->
+        <a href="{% url 'user_login' %}">登录</a> | 
+        <a href="{% url 'user_register' %}">注册</a>
+    {% endif %}
+</body>
+</html>

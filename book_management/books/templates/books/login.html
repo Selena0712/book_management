@@ -1,7 +1,19 @@
-<!-- templates/books/login.html -->
-<h2>用户登录</h2>
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">登录</button>
-</form>
+<!-- books/templates/books/login.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录</title>
+</head>
+<body>
+    <h1>登录</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">登录</button>
+    </form>
+
+    <p><a href="{% url 'password_reset' %}">忘记密码？</a></p>
+</body>
+</html>

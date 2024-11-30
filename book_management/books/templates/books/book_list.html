@@ -1,52 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Book List</title>
-    <style>
-        .book-item {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-    </style>
-</head>
-<body>
-    <div>
-        {% if user.is_authenticated %}
-            <p>欢迎，{{ user.username }}!</p>
-            <a href="{% url 'logout' %}">退出</a>
-        {% else %}
-            <a href="{% url 'login' %}">登录</a> |
-            <a href="{% url 'register' %}">注册</a>
-        {% endif %}
-    </div>
-    <h1>Book List</h1>
-    <a href="{% url 'add_book' %}">Add New Book</a>
-    <a href="{% url 'loan_history' %}">View loan history</a>
-    <ul>
-        {% for item in books_with_loans %}
-            <li class="book-item">
-                <span><strong>Title:</strong> {{ item.book.title }}</span>
-                <span><strong>Author:</strong> {{ item.book.author.name }}</span>
-                <span><strong>Published Date:</strong> {{ item.book.published_date }}</span>
-                <span><strong>ISBN:</strong> {{ item.book.isbn }}</span>
-                <span><strong>Category:</strong> {{ item.book.category }}</span>
-                <span><strong>Available Copies:</strong> {{ item.book.available_copies }}</span>
-                <a href="{% url 'edit_book' item.book.id %}">Edit</a> |
-                <a href="{% url 'delete_book' item.book.id %}">Delete</a> |
-                
-                {% if item.unreturned_loan %}
-                    <!-- 如果有未归还的借阅记录，显示 Return 按钮 -->
-                    <a href="{% url 'return_book' item.unreturned_loan.id %}">Return</a>
+<h1>图书列表</h1>
+<ul>
+    <a href="{% url 'home' %}">返回首页</a>
+    
+    <!-- 只有管理员才能看到添加新图书的链接 -->
+    {% if user.is_staff %}
+    <a href="{% url 'add_book' %}">添加新图书</a>
+    {% endif %}
+
+    {% for book in books %}
+        <li>
+            <strong>{{ book.title }}</strong> - {{ book.author }} - 库存：{{ book.stock }} <br>
+            出版日期：{{ book.published_date }} <br>
+            出版社:{{ book.publisher }} <br>
+            ISBN：{{ book.isbn }} <br>
+            类别：{{ book.get_category_display }} <br>
+            描述：{{ book.description|truncatewords:10 }} <br>
+
+            <!-- 管理员显示的按钮 -->
+            {% if user.is_staff %}
+                <a href="{% url 'edit_book' book.pk %}">编辑</a> |
+                <a href="{% url 'delete_book' book.pk %}">删除</a> |
+            {% endif %}
+
+            <!-- 判断当前用户是否已经借阅过这本书 -->
+            {% if user.is_authenticated %}
+                {% if book.id in loaned_books %}
+                    <!-- 如果该用户借了书，显示还书按钮 -->
+                    <a href="{% url 'return_book' book.id %}">还书</a>
+                {% elif book.stock > 0 %}
+                    <!-- 如果库存大于 0 且用户没有借书，则显示借书按钮 -->
+                    <a href="{% url 'borrow_book' book.id %}">借阅</a>
                 {% else %}
-                    <!-- 如果没有未归还的借阅记录，显示 Loan 按钮 -->
-                    <a href="{% url 'loan_book' item.book.id %}">Loan</a>
+                    <!-- 如果库存不足，显示库存不足 -->
+                    <span>库存不足</span>
                 {% endif %}
-            </li>
-            <hr>
-        {% endfor %}
-    </ul>
-</body>
-</html>
+            {% endif %}
+
+        </li>
+    {% endfor %}
+</ul>

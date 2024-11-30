@@ -1,0 +1,16 @@
+<!-- books/templates/books/blacklisted.html -->
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>黑名单通知</title>
+</head>
+<body>
+    <h1>你已被列入黑名单</h1>
+    <p>由于你逾期未归还书籍，现已被系统列入黑名单，无法借阅图书。</p>
+    <p>请通过申诉解除黑名单限制。</p>
+    <a href="{% url 'appeal_blacklist' %}">点击这里进行申诉</a><br>
+    <a href="{% url 'book_list' %}">返回图书列表</a>
+</body>
+</html>
