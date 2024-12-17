@@ -1,0 +1,66 @@
+<!-- books/templates/books/process_appeal.html -->
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>处理申诉</title>
+    <!-- 引入 Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #343a40;
+        }
+        .form-section {
+            margin-top: 20px;
+        }
+        .btn-group {
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>处理申诉</h1>
+        
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <p><strong>申诉人：</strong> {{ appeal.user.username }}</p>
+                <p><strong>申诉理由：</strong> {{ appeal.reason }}</p>
+
+                <!-- 表单开始 -->
+                <form method="post">
+                    {% csrf_token %}
+                    <!-- 操作按钮 -->
+                    <div class="btn-group" role="group" aria-label="操作按钮">
+                        <button type="submit" name="action" value="approve" class="btn btn-success">接受申诉</button>
+                        <button type="submit" name="action" value="reject" class="btn btn-danger">拒绝申诉</button>
+                    </div>
+
+                    <!-- 拒绝理由输入框 -->
+                    <div class="form-section mt-4">
+                        <label for="rejection_reason" class="form-label">拒绝理由（若拒绝）：</label>
+                        <textarea name="rejection_reason" id="rejection_reason" class="form-control" rows="4" placeholder="请输入拒绝理由"></textarea>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- 返回链接 -->
+        <div class="text-end mt-3">
+            <a href="{% url 'view_appeals' %}" class="btn btn-outline-secondary">返回申诉管理</a>
+        </div>
+    </div>
+
+    <!-- 引入 Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
