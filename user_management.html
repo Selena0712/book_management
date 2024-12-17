@@ -1,0 +1,79 @@
+<!-- user_management.html -->
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户管理</title>
+    <!-- 引入 Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        h1 {
+            text-align: center;
+            color: #343a40;
+            margin-bottom: 30px;
+        }
+        .table thead {
+            background-color: #343a40;
+            color: white;
+        }
+        .btn-group a {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>用户管理</h1>
+        <!-- 返回首页按钮 -->
+        <div class="mb-3 text-end">
+            <a href="{% url 'home' %}" class="btn btn-secondary">返回首页</a>
+        </div>
+
+        <!-- 用户管理表格 -->
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>用户名</th>
+                        <th>电子邮件地址</th>
+                        <th>电话号码</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.email_address }}</td>
+                            <td>{{ user.phone_number }}</td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a href="{% url 'edit_user' user.id %}" class="btn btn-primary btn-sm">编辑</a>
+                                    <a href="{% url 'reset_user_password' user.id %}" class="btn btn-warning btn-sm">重置密码</a>
+                                    <a href="{% url 'delete_user' user.id %}" 
+                                       class="btn btn-danger btn-sm" 
+                                       onclick="return confirm('你确定要删除这个用户吗?')">删除用户</a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="4" class="text-center">没有找到任何用户。</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 引入 Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
